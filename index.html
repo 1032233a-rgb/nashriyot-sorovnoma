@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nashriyot va kitob sohasi — so'rovnoma</title>
+<style>
+  :root {
+    --ink: #2b2118;
+    --paper: #faf6ef;
+    --card: #ffffff;
+    --accent: #8b5e34;
+    --accent-dark: #6f4a27;
+    --line: #e6ddd0;
+    --muted: #7a6f61;
+    --error: #b3261e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.55;
+    padding: 24px 16px 64px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  header {
+    text-align: center;
+    padding: 32px 20px 28px;
+    border-bottom: 3px double var(--accent);
+    margin-bottom: 28px;
+  }
+  header .emblem { font-size: 40px; }
+  header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+  }
+  header p {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  fieldset {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 22px 18px;
+    margin-bottom: 20px;
+  }
+  legend {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--accent-dark);
+    padding: 0 10px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    line-height: 26px;
+  }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 6px; }
+  .q > label.title, .q > .title {
+    display: block;
+    font-weight: 700;
+    font-size: 15.5px;
+    margin-bottom: 8px;
+  }
+  .req { color: var(--error); }
+  .hint { font-size: 13px; color: var(--muted); margin: -4px 0 8px; }
+  input[type="text"], input[type="tel"], input[type="email"], select, textarea {
+    width: 100%;
+    font: inherit;
+    font-size: 15px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fffdf9;
+    color: var(--ink);
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
+  }
+  textarea { min-height: 96px; resize: vertical; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .choice:hover { background: #f6efe3; }
+  .choice input { margin-top: 4px; accent-color: var(--accent); width: 16px; height: 16px; flex: none; }
+  .choice span { font-size: 15px; }
+  .other-input { margin-top: 6px; margin-left: 36px; width: calc(100% - 36px); display: none; }
+  .other-input.show { display: block; }
+  button[type="submit"] {
+    display: block;
+    width: 100%;
+    font: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    cursor: pointer;
+    letter-spacing: 0.4px;
+  }
+  button[type="submit"]:hover { background: var(--accent-dark); }
+  button[type="submit"]:disabled { opacity: 0.6; cursor: wait; }
+  .status { margin-top: 14px; text-align: center; font-size: 15px; display: none; }
+  .status.err { color: var(--error); display: block; }
+  #thanks {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 48px 24px;
+    text-align: center;
+  }
+  #thanks .emblem { font-size: 48px; }
+  #thanks h2 { margin-top: 14px; font-size: 22px; }
+  #thanks p { margin-top: 10px; color: var(--muted); }
+  footer { text-align: center; margin-top: 28px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="emblem">📚</div>
+    <h1>Nashriyot va kitob sohasi vakillari uchun so'rovnoma</h1>
+    <p>Soha ishtirokchilarini yagona assotsiatsiya ostida birlashtirishdan avval sizning fikringiz, ehtiyojlaringiz va takliflaringizni o'rganmoqchimiz. So'rovnoma 5–7 daqiqa vaqt oladi. Javoblaringiz faqat umumlashtirilgan tahlil uchun ishlatiladi.</p>
+  </header>
+
+  <form id="surveyForm" novalidate>
+
+    <!-- ============ 1. MA'LUMOTLAR BANDI ============ -->
+    <fieldset>
+      <legend>Ma'lumotlar</legend>
+
+      <div class="q grid2">
+        <div>
+          <label class="title" for="fio">F.I.Sh. <span class="req">*</span></label>
+          <input type="text" id="fio" name="fio" required placeholder="Familiya Ism Sharif">
+        </div>
+        <div>
+          <label class="title" for="tashkilot">Tashkilot nomi <span class="req">*</span></label>
+          <input type="text" id="tashkilot" name="tashkilot" required placeholder="Masalan: «Kitob olami» MChJ">
+        </div>
+      </div>
+
+      <div class="q grid2">
+        <div>
+          <label class="title" for="lavozim">Lavozimingiz</label>
+          <input type="text" id="lavozim" name="lavozim" placeholder="Masalan: direktor, muharrir">
+        </div>
+        <div>
+          <label class="title" for="hudud">Hudud <span class="req">*</span></label>
+          <select id="hudud" name="hudud" required>
+            <option value="">— Tanlang —</option>
+            <option>Toshkent shahri</option>
+            <option>Toshkent viloyati</option>
+            <option>Andijon viloyati</option>
+            <option>Buxoro viloyati</option>
+            <option>Farg'ona viloyati</option>
+            <option>Jizzax viloyati</option>
+            <option>Namangan viloyati</option>
+            <option>Navoiy viloyati</option>
+            <option>Qashqadaryo viloyati</option>
+            <option>Qoraqalpog'iston Respublikasi</option>
+            <option>Samarqand viloyati</option>
+            <option>Sirdaryo viloyati</option>
+            <option>Surxondaryo viloyati</option>
+            <option>Xorazm viloyati</option>
+            <option>O'zbekistondan tashqarida</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="q grid2">
+        <div>
+          <label class="title" for="telefon">Telefon raqam <span class="req">*</span></label>
+          <input type="tel" id="telefon" name="telefon" required placeholder="+998 90 123 45 67">
+        </div>
+        <div>
+          <label class="title" for="email">Elektron pochta</label>
+          <input type="email" id="email" name="email" placeholder="misol@pochta.uz">
+        </div>
+      </div>
+
+      <div class="q">
+        <span class="title">Faoliyat yo'nalishingiz <span class="req">*</span></span>
+        <p class="hint">Bir nechtasini tanlash mumkin.</p>
+        <label class="choice"><input type="checkbox" name="faoliyat" value="Nashriyot"><span>Nashriyot</span></label>
+        <label class="choice"><input type="checkbox" name="faoliyat" value="Kitob do'koni / chakana savdo"><span>Kitob do'koni / chakana savdo</span></label>
+        <label class="choice"><input type="checkbox" name="faoliyat" value="Ulgurji savdo / distributsiya"><span>Ulgurji savdo / distributsiya</span></label>
+        <label class="choice"><input type="checkbox" name="faoliyat" value="Bosmaxona / poligrafiya"><span>Bosmaxona / poligrafiya</span></label>
+        <label class="choice"><input type="checkbox" name="faoliyat" value="Onlayn kitob savdosi"><span>Onlayn kitob savdosi</span></label>
+        <label class="choice"><input type="checkbox" name="faoliyat" value="Muallif / tarjimon"><span>Muallif / tarjimon</span></label>
+        <label class="choice"><input type="checkbox" name="faoliyat" value="Kutubxona / ta'lim muassasasi"><span>Kutubxona / ta'lim muassasasi</span></label>
+        <label class="choice"><input type="checkbox" name="faoliyat" value="__other__" data-other="faoliyat_other"><span>Boshqa</span></label>
+        <input type="text" class="other-input" id="faoliyat_other" name="faoliyat_other" placeholder="Yo'nalishingizni yozing">
+      </div>
+    </fieldset>
+
+    <!-- ============ 2. FAOLIYAT HAQIDA ============ -->
+    <fieldset>
+      <legend>Faoliyatingiz haqida</legend>
+
+      <div class="q">
+        <span class="title">1. Sohada necha yildan beri faoliyat yuritasiz? <span class="req">*</span></span>
+        <label class="choice"><input type="radio" name="tajriba" value="1 yildan kam" required><span>1 yildan kam</span></label>
+        <label class="choice"><input type="radio" name="tajriba" value="1–3 yil"><span>1–3 yil</span></label>
+        <label class="choice"><input type="radio" name="tajriba" value="3–7 yil"><span>3–7 yil</span></label>
+        <label class="choice"><input type="radio" name="tajriba" value="7–15 yil"><span>7–15 yil</span></label>
+        <label class="choice"><input type="radio" name="tajriba" value="15 yildan ortiq"><span>15 yildan ortiq</span></label>
+      </div>
+
+      <div class="q">
+        <span class="title">2. Tashkilotingizda nechta xodim ishlaydi?</span>
+        <label class="choice"><input type="radio" name="xodimlar" value="Yakka tartibda ishlayman"><span>Yakka tartibda ishlayman</span></label>
+        <label class="choice"><input type="radio" name="xodimlar" value="2–10"><span>2–10</span></label>
+        <label class="choice"><input type="radio" name="xodimlar" value="11–50"><span>11–50</span></label>
+        <label class="choice"><input type="radio" name="xodimlar" value="50 dan ortiq"><span>50 dan ortiq</span></label>
+      </div>
+
+      <div class="q">
+        <span class="title">3. Sohadagi eng katta muammolar nimada deb hisoblaysiz? <span class="req">*</span></span>
+        <p class="hint">Eng ko'pi bilan 5 tasini tanlang.</p>
+        <label class="choice"><input type="checkbox" name="muammolar" value="Kitobxonlik darajasining pastligi"><span>Kitobxonlik darajasining pastligi</span></label>
+        <label class="choice"><input type="checkbox" name="muammolar" value="Distributsiya va logistika qiyinchiliklari"><span>Distributsiya va logistika qiyinchiliklari</span></label>
+        <label class="choice"><input type="checkbox" name="muammolar" value="Mualliflik huquqi buzilishi / piratchilik"><span>Mualliflik huquqi buzilishi / piratchilik</span></label>
+        <label class="choice"><input type="checkbox" name="muammolar" value="Qog'oz va poligrafiya xarajatlarining yuqoriligi"><span>Qog'oz va poligrafiya xarajatlarining yuqoriligi</span></label>
+        <label class="choice"><input type="checkbox" name="muammolar" value="Moliyaviy resurslar va kreditga kirish qiyinligi"><span>Moliyaviy resurslar va kreditga kirish qiyinligi</span></label>
+        <label class="choice"><input type="checkbox" name="muammolar" value="Malakali kadrlar yetishmasligi"><span>Malakali kadrlar (muharrir, dizayner, tarjimon) yetishmasligi</span></label>
+        <label class="choice"><input type="checkbox" name="muammolar" value="Davlat tomonidan qo'llab-quvvatlash yetarli emasligi"><span>Davlat tomonidan qo'llab-quvvatlash yetarli emasligi</span></label>
+        <label class="choice"><input type="checkbox" name="muammolar" value="Soha bo'yicha ishonchli statistika yo'qligi"><span>Soha bo'yicha ishonchli statistika yo'qligi</span></label>
+        <label class="choice"><input type="checkbox" name="muammolar" value="Sotuv kanallari va marketing zaifligi"><span>Sotuv kanallari va marketing zaifligi</span></label>
+        <label class="choice"><input type="checkbox" name="muammolar" value="__other__" data-other="muammolar_other"><span>Boshqa</span></label>
+        <input type="text" class="other-input" id="muammolar_other" name="muammolar_other" placeholder="Muammoni yozing">
+      </div>
+    </fieldset>
+
+    <!-- ============ 3. ASSOTSIATSIYA HAQIDA ============ -->
+    <fieldset>
+      <legend>Assotsiatsiya haqida</legend>
+
+      <div class="q">
+        <span class="title">4. Soha vakillarini yagona assotsiatsiya ostida birlashtirish g'oyasiga munosabatingiz? <span class="req">*</span></span>
+        <label class="choice"><input type="radio" name="munosabat" value="To'liq qo'llab-quvvatlayman" required><span>To'liq qo'llab-quvvatlayman</span></label>
+        <label class="choice"><input type="radio" name="munosabat" value="Qo'llab-quvvatlayman, lekin savollarim bor"><span>Qo'llab-quvvatlayman, lekin savollarim bor</span></label>
+        <label class="choice"><input type="radio" name="munosabat" value="Betarafman"><span>Betarafman</span></label>
+        <label class="choice"><input type="radio" name="munosabat" value="Shubham bor"><span>Shubham bor</span></label>
+      </div>
+
+      <div class="q">
+        <span class="title">5. Assotsiatsiyadan qanday xizmat va imkoniyatlarni kutasiz? <span class="req">*</span></span>
+        <p class="hint">Bir nechtasini tanlash mumkin.</p>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="Soha manfaatlarini davlat organlarida himoya qilish"><span>Soha manfaatlarini davlat organlarida himoya qilish (advokatlik)</span></label>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="Mualliflik huquqini himoya qilishda yordam"><span>Mualliflik huquqini himoya qilishda yordam</span></label>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="Soha statistikasi va bozor tahlillari"><span>Soha statistikasi va bozor tahlillari</span></label>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="O'quv kurslari va malaka oshirish"><span>O'quv kurslari va malaka oshirish</span></label>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="Kitob yarmarkalari va festivallar tashkil etish"><span>Kitob yarmarkalari va festivallar tashkil etish</span></label>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="Xalqaro hamkorlik va eksport imkoniyatlari"><span>Xalqaro hamkorlik va eksport imkoniyatlari</span></label>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="A'zolar o'rtasida hamkorlik va networking"><span>A'zolar o'rtasida hamkorlik va networking</span></label>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="Umumiy marketing va kitobxonlikni targ'ib qilish"><span>Umumiy marketing va kitobxonlikni targ'ib qilish</span></label>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="Huquqiy va buxgalteriya maslahatlari"><span>Huquqiy va buxgalteriya maslahatlari</span></label>
+        <label class="choice"><input type="checkbox" name="kutilmalar" value="__other__" data-other="kutilmalar_other"><span>Boshqa</span></label>
+        <input type="text" class="other-input" id="kutilmalar_other" name="kutilmalar_other" placeholder="Kutilmangizni yozing">
+      </div>
+
+      <div class="q">
+        <span class="title">6. Assotsiatsiyaga a'zolik badali to'lashga tayyormisiz? <span class="req">*</span></span>
+        <label class="choice"><input type="radio" name="badal" value="Ha, xizmatlar foydali bo'lsa tayyorman" required><span>Ha, xizmatlar foydali bo'lsa tayyorman</span></label>
+        <label class="choice"><input type="radio" name="badal" value="Ha, lekin ramziy miqdorda"><span>Ha, lekin ramziy miqdorda</span></label>
+        <label class="choice"><input type="radio" name="badal" value="Hozircha aniq javob berolmayman"><span>Hozircha aniq javob berolmayman</span></label>
+        <label class="choice"><input type="radio" name="badal" value="Yo'q, bepul a'zolik tarafdoriman"><span>Yo'q, bepul a'zolik tarafdoriman</span></label>
+      </div>
+
+      <div class="q">
+        <span class="title">7. Assotsiatsiya faoliyatida qanday ishtirok etishga tayyorsiz?</span>
+        <p class="hint">Bir nechtasini tanlash mumkin.</p>
+        <label class="choice"><input type="checkbox" name="ishtirok" value="Oddiy a'zo sifatida"><span>Oddiy a'zo sifatida</span></label>
+        <label class="choice"><input type="checkbox" name="ishtirok" value="Ishchi guruh / qo'mitalarda faol ishtirok"><span>Ishchi guruh / qo'mitalarda faol ishtirok</span></label>
+        <label class="choice"><input type="checkbox" name="ishtirok" value="Tadbirlarni tashkil etishda yordam"><span>Tadbirlarni tashkil etishda yordam</span></label>
+        <label class="choice"><input type="checkbox" name="ishtirok" value="Ekspert / trener sifatida"><span>Ekspert / trener sifatida</span></label>
+        <label class="choice"><input type="checkbox" name="ishtirok" value="Homiylik / moliyaviy ko'mak"><span>Homiylik / moliyaviy ko'mak</span></label>
+      </div>
+
+      <div class="q">
+        <label class="title" for="taklif">8. Assotsiatsiya birinchi navbatda nimadan boshlashi kerak deb hisoblaysiz?</label>
+        <textarea id="taklif" name="taklif" placeholder="Fikr va takliflaringizni erkin yozing..."></textarea>
+      </div>
+
+      <div class="q">
+        <label class="title" for="izoh">9. Qo'shimcha izoh yoki savollaringiz</label>
+        <textarea id="izoh" name="izoh" placeholder="Ixtiyoriy..."></textarea>
+      </div>
+    </fieldset>
+
+    <button type="submit" id="submitBtn">Javoblarni yuborish</button>
+    <p class="status" id="status"></p>
+  </form>
+
+  <div id="thanks">
+    <div class="emblem">✅</div>
+    <h2>Rahmat!</h2>
+    <p>Javoblaringiz muvaffaqiyatli qabul qilindi. Assotsiatsiya tashkil etilishi bo'yicha yangiliklarni siz ko'rsatgan aloqa vositalari orqali yetkazamiz.</p>
+  </div>
+
+  <footer>So'rovnoma natijalari faqat umumlashtirilgan holda tahlil qilinadi.</footer>
+</div>
+
+<script>
+// Google Apps Script Web App manzili — sozlashdan keyin shu yerga qo'yiladi
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-w5fj4UVv8vQTjodGuJpSFTULXrprVMFfwnkC5Dlc716ZGrYCqKhS-gVlwUc0AqkN5g/exec';
+
+// "Boshqa" varianti belgilansa, matn maydonini ko'rsatish
+document.querySelectorAll('input[data-other]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    const box = document.getElementById(cb.dataset.other);
+    box.classList.toggle('show', cb.checked);
+    if (!cb.checked) box.value = '';
+    else box.focus();
+  });
+});
+
+const form = document.getElementById('surveyForm');
+const statusEl = document.getElementById('status');
+const btn = document.getElementById('submitBtn');
+
+// Checkbox guruhlaridan qiymatlarni yig'ish ("Boshqa" matni bilan almashtiriladi
+function collectGroup(name) {
+  const vals = [];
+  form.querySelectorAll(`input[name="${name}"]:checked`).forEach(cb => {
+    if (cb.value === '__other__') {
+      const other = document.getElementById(cb.dataset.other).value.trim();
+      if (other) vals.push('Boshqa: ' + other);
+    } else {
+      vals.push(cb.value);
+    }
+  });
+  return vals;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  statusEl.className = 'status';
+  statusEl.textContent = '';
+
+  if (!form.reportValidity()) return;
+
+  const faoliyat = collectGroup('faoliyat');
+  const muammolar = collectGroup('muammolar');
+  if (faoliyat.length === 0) {
+    statusEl.className = 'status err';
+    statusEl.textContent = 'Iltimos, kamida bitta faoliyat yo\'nalishini tanlang.';
+    return;
+  }
+  if (muammolar.length === 0) {
+    statusEl.className = 'status err';
+    statusEl.textContent = 'Iltimos, 3-savolda kamida bitta muammoni tanlang.';
+    return;
+  }
+  if (muammolar.length > 5) {
+    statusEl.className = 'status err';
+    statusEl.textContent = '3-savolda eng ko\'pi bilan 5 ta variant tanlash mumkin.';
+    return;
+  }
+
+  const data = {
+    sana: new Date().toLocaleString('uz-UZ', { timeZone: 'Asia/Tashkent' }),
+    fio: form.fio.value.trim(),
+    tashkilot: form.tashkilot.value.trim(),
+    lavozim: form.lavozim.value.trim(),
+    hudud: form.hudud.value,
+    telefon: form.telefon.value.trim(),
+    email: form.email.value.trim(),
+    faoliyat: faoliyat.join('; '),
+    tajriba: form.querySelector('input[name="tajriba"]:checked')?.value || '',
+    xodimlar: form.querySelector('input[name="xodimlar"]:checked')?.value || '',
+    muammolar: muammolar.join('; '),
+    munosabat: form.querySelector('input[name="munosabat"]:checked')?.value || '',
+    kutilmalar: collectGroup('kutilmalar').join('; '),
+    badal: form.querySelector('input[name="badal"]:checked')?.value || '',
+    ishtirok: collectGroup('ishtirok').join('; '),
+    taklif: form.taklif.value.trim(),
+    izoh: form.izoh.value.trim(),
+  };
+
+  btn.disabled = true;
+  btn.textContent = 'Yuborilmoqda...';
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(data),
+    });
+    form.style.display = 'none';
+    document.querySelector('header').style.display = 'none';
+    document.getElementById('thanks').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    statusEl.className = 'status err';
+    statusEl.textContent = 'Yuborishda xatolik yuz berdi. Internet aloqasini tekshirib, qayta urinib ko\'ring.';
+    btn.disabled = false;
+    btn.textContent = 'Javoblarni yuborish';
+  }
+});
+</script>
+</body>
+</html>
