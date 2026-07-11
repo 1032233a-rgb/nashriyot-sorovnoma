@@ -3,6 +3,10 @@
 
 const SHEET_NAME = 'Javoblar';
 
+// Telegram sozlamalari — bot tokeni va xabar boradigan chat ID
+const TG_TOKEN = 'PASTE_BOT_TOKEN_HERE';
+const TG_CHAT_ID = 'PASTE_CHAT_ID_HERE';
+
 const HEADERS = [
   'Sana',
   'F.I.Sh.',
@@ -59,6 +63,8 @@ function doPost(e) {
       d.izoh || '',
     ]);
 
+    sendToTelegram(d);
+
     return ContentService.createTextOutput(JSON.stringify({ ok: true }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
@@ -66,5 +72,40 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   } finally {
     lock.releaseLock();
+  }
+}
+
+// Yangi javobni Telegram'ga xabar qilib yuboradi.
+// Telegram xatosi asosiy oqimni buzmasligi uchun alohida try/catch ichida.
+function sendToTelegram(d) {
+  if (!TG_TOKEN || TG_TOKEN.indexOf('PASTE') === 0) return;
+  try {
+    const lines = [
+      '📚 Yangi so\'rovnoma javobi',
+      '',
+      '👤 ' + (d.fio || '—') + (d.lavozim ? ' (' + d.lavozim + ')' : ''),
+      '🏢 ' + (d.tashkilot || '—'),
+      '📍 ' + (d.hudud || '—'),
+      '📞 ' + (d.telefon || '—') + (d.email ? ' · ' + d.email : ''),
+      '',
+      '📖 Faoliyat: ' + (d.faoliyat || '—'),
+      '⏳ Tajriba: ' + (d.tajriba || '—') + (d.xodimlar ? ' · Xodimlar: ' + d.xodimlar : ''),
+      '⚠️ Muammolar: ' + (d.muammolar || '—'),
+      '🤝 Munosabat: ' + (d.munosabat || '—'),
+      '🎯 Kutilmalar: ' + (d.kutilmalar || '—'),
+      '💰 Badal: ' + (d.badal || '—'),
+      '🙋 Ishtirok: ' + (d.ishtirok || '—'),
+    ];
+    if (d.taklif) lines.push('💡 Taklif: ' + d.taklif);
+    if (d.izoh) lines.push('📝 Izoh: ' + d.izoh);
+
+    UrlFetchApp.fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify({ chat_id: TG_CHAT_ID, text: lines.join('\n') }),
+      muteHttpExceptions: true,
+    });
+  } catch (err) {
+    // Telegram ishlamasa ham javob jadvalga yozilgan bo'ladi
   }
 }
