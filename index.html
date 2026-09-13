@@ -26,15 +26,22 @@
   .wrap { max-width: 720px; margin: 0 auto; }
   header {
     text-align: center;
-    padding: 32px 20px 28px;
+    padding: 0 0 28px;
     border-bottom: 3px double var(--accent);
     margin-bottom: 28px;
   }
-  header .emblem { font-size: 40px; }
+  header .banner {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    box-shadow: 0 6px 20px rgba(43, 33, 24, 0.08);
+  }
   header h1 {
     font-size: 26px;
     font-weight: 700;
-    margin-top: 10px;
+    margin-top: 22px;
     letter-spacing: 0.3px;
   }
   header p {
@@ -140,7 +147,11 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="emblem">📚</div>
+    <picture>
+      <source srcset="assets/banner.webp" type="image/webp">
+      <img class="banner" src="assets/banner.jpg" width="1600" height="897"
+           alt="«Zamonaviy texnologiyalar va bola» kitobi — sotuvda!">
+    </picture>
     <h1>Nashriyot va kitob sohasi vakillari uchun so'rovnoma</h1>
     <p>Soha ishtirokchilarini yagona assotsiatsiya ostida birlashtirishdan avval sizning fikringiz, ehtiyojlaringiz va takliflaringizni o'rganmoqchimiz. So'rovnoma 5–7 daqiqa vaqt oladi. Javoblaringiz faqat umumlashtirilgan tahlil uchun ishlatiladi.</p>
   </header>
