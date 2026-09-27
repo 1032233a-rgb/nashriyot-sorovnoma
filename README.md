@@ -1,12 +1,12 @@
 # Nashriyot va kitob sohasi — so'rovnoma
 
 Soha vakillarini assotsiatsiya ostida birlashtirishdan avval o'tkaziladigan onlayn so'rovnoma.
-Javoblar Google Sheets'da jamlanadi.
+Javoblar Google Sheets'da jamlanadi va har bir yangi javob Telegram'ga xabar qilib yuboriladi.
 
 ## Fayllar
 
 - `index.html` - so'rovnoma sahifasi (foydalanuvchilar to'ldiradi).
-- `apps-script.gs` - javoblarni Google Sheets'ga yozadigan server kodi.
+- `apps-script.gs` - javoblarni Google Sheets'ga yozadigan va Telegram'ga xabar yuboradigan server kodi.
 
 ## O'rnatish tartibi
 
@@ -29,15 +29,37 @@ Javoblar Google Sheets'da jamlanadi.
 
 ### 3. HTML'ga URL qo'yish
 
-`index.html` faylida quyidagi qatorni toping:
+`index.html` faylida `SCRIPT_URL` qatori bor. Hozir unda amaldagi Web App URL yozilgan.
+Yangi deployment (yangi URL) yaratilsa, shu qatorni yangi URL bilan almashtiring:
 
 ```js
-const SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+const SCRIPT_URL = 'https://script.google.com/macros/s/.../exec';
 ```
 
-va nusxalangan URL'ni qo'ying.
+### 4. Telegram xabarnomasi (ixtiyoriy)
 
-### 4. Sahifani joylash
+Har bir yangi javob Telegram chatga qisqa xabar bo'lib keladi.
+
+1. Telegram'da [@BotFather](https://t.me/BotFather) orqali bot yarating va tokenni oling.
+2. Botni xabar boradigan guruh/kanalga qo'shing (kanal bo'lsa, admin qiling).
+3. Chat ID ni aniqlang: guruhga biror xabar yozib,
+   `https://api.telegram.org/bot<TOKEN>/getUpdates` ni oching va `chat.id` ni oling
+   (guruh/kanal ID'lari odatda `-100...` bilan boshlanadi).
+4. Apps Script muharririda `apps-script.gs` dagi qiymatlarni to'ldiring:
+
+   ```js
+   const TG_TOKEN = 'PASTE_BOT_TOKEN_HERE';
+   const TG_CHAT_ID = 'PASTE_CHAT_ID_HERE';
+   ```
+
+5. Qayta e'lon qiling (pastdagi "Eslatma"ga qarang).
+
+Token `PASTE...` bo'lib qolsa, Telegram qismi o'tkazib yuboriladi va javoblar faqat jadvalga yoziladi.
+Telegram xatosi jadvalga yozishni to'xtatmaydi.
+
+**Muhim:** haqiqiy tokenni faqat Apps Script muharririga yozing, repozitoriyga commit qilmang.
+
+### 5. Sahifani joylash
 
 Variantlardan biri:
 
